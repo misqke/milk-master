@@ -68,13 +68,14 @@ const scraper = async (milkList, login, password) => {
     */
 
   // screenshot confirmation and encode in base64
-  const image = await page.screenshot({ type: "png", encoding: "base64" });
+  const image = await page.screenshot({ type: "png" });
+  const imageString = await image.toString("base64");
 
   // close browser
   await browser.close();
 
   // return base64 image
-  return image;
+  return imageString;
 };
 
 module.exports = scraper;
