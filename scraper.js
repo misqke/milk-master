@@ -24,6 +24,7 @@ const scraper = async (milkList, login, password) => {
   await page.keyboard.press("Enter");
   await page.waitForNavigation();
   await page.click("#listView div div.col-3.col-md-2.col-lg-1 span a");
+  await page.waitForSelector("#addNew");
   await page.click("#addNew");
 
   // tab to set full inventory and submit
