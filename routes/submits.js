@@ -1,10 +1,9 @@
 const express = require("express");
 
-const { submitInventory } = require("../controllers/submits");
-const extendTimeout = require("../middleware/extendTimeout");
+const { submitInventory, getConfirmation } = require("../controllers/submits");
 const router = express.Router();
 
-router.use(extendTimeout);
 router.post("/inventory", submitInventory);
+router.get("/confirmation", getConfirmation);
 
 module.exports = router;

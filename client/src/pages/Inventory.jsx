@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { isAuth } from "../actions/auth";
-import { submitInventory } from "../actions/submits";
+import { submitInventory, getConfirmation } from "../actions/submits";
 import { useNavigate } from "react-router-dom";
 import MilkRow from "../components/MilkRow";
 import { getAllMilks } from "../actions/milks";
@@ -37,7 +37,16 @@ const Inventory = () => {
       setMessage("");
     } else {
       setMessage(data.msg);
-      setUrl(data.data);
+      const getImage = setInterval(async () => {
+        const data = await getConfirmation();
+        if (data.data) {
+          setUrl(data.data);
+          setMessage(data.msg);
+          clearInterval(getImage);
+        } else {
+          setMessage(data.msg);
+        }
+      }, 16000);
     }
   };
 
