@@ -6,6 +6,7 @@ const url = "https://orders.deanfoods.com/";
 const scraper = async (milkList, login, password) => {
   // start browser and open page
   const browser = await puppeteer.launch({
+    args: ["--no-sandbox"],
     defaultViewport: {
       width: 300,
       height: 500,
