@@ -7,9 +7,9 @@ const scraper = async (milkList, login, password) => {
   // start browser and open page
   const browser = await puppeteer.launch({
     headless: true,
-    args: ["-no-sandbox", "-disable-setuid-sandbox"],
+    args: ["--no-sandbox", "-disable-setuid-sandbox"],
     defaultViewport: {
-      width: 300,
+      width: 500,
       height: 500,
     },
   });
@@ -28,24 +28,24 @@ const scraper = async (milkList, login, password) => {
   await page.click("#addNew");
 
   // tab to set full inventory and submit
-  await page.keyboard.press("Tab", { delay: 300 });
-  await page.keyboard.press("Tab", { delay: 300 });
-  await page.keyboard.press("Tab", { delay: 300 });
-  await page.keyboard.press("Tab", { delay: 300 });
-  await page.keyboard.press("Space", { delay: 300 });
-  await page.keyboard.press("ArrowUp", { delay: 300 });
-  await page.keyboard.press("Enter", { delay: 300 });
-  await page.keyboard.press("Tab", { delay: 300 });
-  await page.keyboard.press("Tab", { delay: 300 });
-  await page.keyboard.press("Tab", { delay: 300 });
-  await page.keyboard.press("Tab", { delay: 300 });
-  await page.keyboard.press("Enter", { delay: 300 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Space", { delay: 500 });
+  await page.keyboard.press("ArrowUp", { delay: 500 });
+  await page.keyboard.press("Enter", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Enter", { delay: 500 });
   // await page.click(
   //   "body  div.crp-body-content  div.crp-content  div  div  div  form  div:nth-child(3)  div:nth-child(8)  div  div  button"
   // );
 
   // fill out inventory form from milk list, submit for review
-  await page.waitForSelector("tbody > tr > td > input");
+  await page.waitForNavigation();
   for (let i = 0; i < milkList.length; i++) {
     await page.type(
       `#grouped-gridview > div.k-grid-content.k-auto-scrollable > table > tbody > tr:nth-child(${
