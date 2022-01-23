@@ -20,18 +20,18 @@ const scraper = async (milkList, login, password) => {
   await page.type("#ProfileID", login);
   await page.type("#AppPwd", password);
   await page.keyboard.press("Enter");
-  await page.waitForNavigation({ waitUntil: "networkidle2" });
+  await page.waitForNavigation();
   await page.click("#listView div div.col-3.col-md-2.col-lg-1 span a");
   await page.click("#addNew");
 
   // tab to set full inventory and submit
-  await page.keyboard.press("Tab", { delay: 500 });
-  await page.keyboard.press("Tab", { delay: 500 });
-  await page.keyboard.press("Tab", { delay: 600 });
-  await page.keyboard.press("Tab", { delay: 600 });
-  await page.keyboard.press("Space", { delay: 600 });
-  await page.keyboard.press("ArrowUp", { delay: 600 });
-  await page.keyboard.press("Enter", { delay: 600 });
+  await page.keyboard.press("Tab", { delay: 300 });
+  await page.keyboard.press("Tab", { delay: 300 });
+  await page.keyboard.press("Tab", { delay: 300 });
+  await page.keyboard.press("Tab", { delay: 300 });
+  await page.keyboard.press("Space", { delay: 300 });
+  await page.keyboard.press("ArrowUp", { delay: 300 });
+  await page.keyboard.press("Enter", { delay: 300 });
   await page.click(
     "body  div.crp-body-content  div.crp-content  div  div  div  form  div:nth-child(3)  div:nth-child(8)  div  div  button"
   );
