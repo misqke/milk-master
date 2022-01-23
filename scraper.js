@@ -39,13 +39,12 @@ const scraper = async (milkList, login, password) => {
   await page.keyboard.press("Tab", { delay: 500 });
   await page.keyboard.press("Tab", { delay: 500 });
   await page.keyboard.press("Tab", { delay: 500 });
-  await page.keyboard.press("Enter", { delay: 500 });
+  await page.keyboard.press("Enter", { delay: 1000 });
   // await page.click(
   //   "body  div.crp-body-content  div.crp-content  div  div  div  form  div:nth-child(3)  div:nth-child(8)  div  div  button"
   // );
 
   // fill out inventory form from milk list, submit for review
-  await page.waitForNavigation();
   for (let i = 0; i < milkList.length; i++) {
     await page.type(
       `#grouped-gridview > div.k-grid-content.k-auto-scrollable > table > tbody > tr:nth-child(${
