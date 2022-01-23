@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { HashRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Header from "./components/Header";
+import Inventory from "./pages/Inventory";
+import Order from "./pages/Order";
+import Milks from "./pages/Milks";
+import Confirmation from "./pages/Confirmation";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+      <HashRouter>
+        <Header />
+        <div
+          className="bg-dark"
+          style={{ width: "100vw", minHeight: "calc(100vh - 100px)" }}
         >
-          Learn React
-        </a>
-      </header>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/order" element={<Order />} />
+            <Route path="/milks" element={<Milks />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+          </Routes>
+        </div>
+      </HashRouter>
     </div>
   );
 }
