@@ -5,10 +5,9 @@ const url = "https://orders.deanfoods.com/";
 
 const scraper = async (milkList, login, password) => {
   const browser = await puppeteer.launch({
-    headless: false,
     defaultViewport: {
-      width: 400,
-      height: 600,
+      width: 300,
+      height: 500,
     },
   });
   const page = await browser.newPage();
@@ -18,12 +17,12 @@ const scraper = async (milkList, login, password) => {
   await page.type("#ProfileID", login);
   await page.type("#AppPwd", password);
   await page.keyboard.press("Enter");
-  await page.waitForNavigation({ waitUntil: "domcontentloaded" });
+  await page.waitForNavigation({ waitUntil: "networkidle2" });
   await page.click("#listView div div.col-3.col-md-2.col-lg-1 span a");
   await page.click("#addNew");
 
-  await page.keyboard.press("Tab", { delay: 600 });
-  await page.keyboard.press("Tab", { delay: 600 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
   await page.keyboard.press("Tab", { delay: 600 });
   await page.keyboard.press("Tab", { delay: 600 });
   await page.keyboard.press("Space", { delay: 600 });
@@ -52,8 +51,17 @@ const scraper = async (milkList, login, password) => {
 
   await page.click("#action-review");
   await page.waitForSelector(
-    ".well > div:nth-child(2) > div.k-grid-content > table > tbody"
+    ".well > div:nth-child(2) > div.k-grid-content > table > tbody > tr"
   );
+
+  // SUBMIT INVENTORY - PRODUCTION ONLY
+  /*
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 500 });
+  await page.keyboard.press("Tab", { delay: 600 });
+  await page.keyboard.press("Tab", { delay: 600 });
+  await page.keyboard.press("Enter", { delay: 400})
+  */
 
   await page.screenshot({ path: "./images/img.png", fullPage: true });
 

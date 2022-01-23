@@ -13,13 +13,18 @@ const Login = () => {
     if (data.error) {
       setError(data.error);
     } else {
-      localStorage.setItem("token", data.data);
+      const now = new Date();
+      const token = {
+        value: data.data,
+        expires: now.getTime() + 14400000,
+      };
+      localStorage.setItem("token", JSON.stringify(token));
       navigate("/");
     }
   };
 
   return (
-    <div className="container">
+    <div className="container w-75">
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">

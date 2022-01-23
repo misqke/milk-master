@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 // cors
 const corsOptions =
   process.env.NODE_ENV === "development"
-    ? { origin: "http://localhost:3000" }
+    ? { origin: "*" }
     : { origin: "https://milk-master.herokuapp.com" };
 app.use(cors(corsOptions));
 

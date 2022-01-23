@@ -2,13 +2,13 @@ import axios from "axios";
 
 export const submitInventory = async (data) => {
   try {
-    const token = localStorage.getItem("token");
+    const token = JSON.parse(localStorage.getItem("token"));
     const response = await axios.post(
       "https://milk-master.herokuapp.com/api/submits/inventory",
       data,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.value}`,
         },
       }
     );

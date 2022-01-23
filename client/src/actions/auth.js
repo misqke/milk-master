@@ -17,6 +17,12 @@ export const login = async (password) => {
 
 export const isAuth = () => {
   if (localStorage.getItem("token")) {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const now = new Date();
+    if (now.getTime() > token.expires) {
+      localStorage.removeItem("token");
+      return false;
+    }
     return true;
   } else {
     return false;
