@@ -6,7 +6,8 @@ const url = "https://orders.deanfoods.com/";
 const scraper = async (milkList, login, password) => {
   // start browser and open page
   const browser = await puppeteer.launch({
-    args: ["--no-sandbox"],
+    headless: true,
+    args: ["-no-sandbox", "-disable-setuid-sandbox"],
     defaultViewport: {
       width: 300,
       height: 500,
@@ -33,9 +34,14 @@ const scraper = async (milkList, login, password) => {
   await page.keyboard.press("Space", { delay: 300 });
   await page.keyboard.press("ArrowUp", { delay: 300 });
   await page.keyboard.press("Enter", { delay: 300 });
-  await page.click(
-    "body  div.crp-body-content  div.crp-content  div  div  div  form  div:nth-child(3)  div:nth-child(8)  div  div  button"
-  );
+  await page.keyboard.press("Tab", { delay: 300 });
+  await page.keyboard.press("Tab", { delay: 300 });
+  await page.keyboard.press("Tab", { delay: 300 });
+  await page.keyboard.press("Tab", { delay: 300 });
+  await page.keyboard.press("Enter", { delay: 300 });
+  // await page.click(
+  //   "body  div.crp-body-content  div.crp-content  div  div  div  form  div:nth-child(3)  div:nth-child(8)  div  div  button"
+  // );
 
   // fill out inventory form from milk list, submit for review
   await page.waitForSelector("tbody > tr > td > input");
