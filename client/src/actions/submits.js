@@ -9,8 +9,8 @@ export const submitInventory = async (data) => {
       {
         headers: {
           Authorization: `Bearer ${token.value}`,
+          timeout: 120000,
         },
-        timeout: 90000,
       }
     );
     return response.data;
