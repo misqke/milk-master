@@ -13,12 +13,15 @@ const Inventory = () => {
   const [milks, setMilks] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [url, setUrl] = useState("");
 
   // functions
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setMessage(
+      "Submitting inventory... This may take a few moments... Do not refresh or close browser...."
+    );
     const submission = {
       milks: [],
       username,
@@ -31,9 +34,10 @@ const Inventory = () => {
     const data = await submitInventory(submission);
     if (data.error) {
       console.log(data.error);
-      setLoading(false);
+      setMessage("");
     } else {
-      navigate("/confirmation");
+      setMessage(data.msg);
+      setUrl(data.data);
     }
   };
 
@@ -52,20 +56,16 @@ const Inventory = () => {
     getMilks();
   }, []);
 
-  if (loading) {
+  if (message) {
     return (
-      <div
-        className="container d-flex justify-content-center align-items-center"
-        style={{ height: "50vh" }}
-      >
-        <h3 className="text-primary text-center">
-          Submitting... This may take a moment...
-        </h3>
+      <div className="container d-flex justify-content-center flex-column py-3 align-items-center">
+        <h3 className="text-primary text-center py-3">{message}</h3>
+        {url && <img src={`data:image/png;base64,${url}`} alt="confirmation" />}
       </div>
     );
   }
 
-  if (!loading) {
+  if (!message) {
     return (
       <div className="container py-2 px-3 bg-dark">
         {milks &&

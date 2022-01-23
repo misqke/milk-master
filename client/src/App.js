@@ -5,7 +5,6 @@ import Header from "./components/Header";
 import Inventory from "./pages/Inventory";
 import Order from "./pages/Order";
 import Milks from "./pages/Milks";
-import Confirmation from "./pages/Confirmation";
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/order" element={<Order />} />
             <Route path="/milks" element={<Milks />} />
-            <Route path="/confirmation" element={<Confirmation />} />
           </Routes>
         </div>
       </HashRouter>

@@ -21,7 +21,6 @@ connectDB(process.env.DB);
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("images"));
 app.use(express.static(path.join(__dirname, "client/build")));
 
 // cors

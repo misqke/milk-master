@@ -3,10 +3,12 @@ const scraper = require("../scraper");
 const submitInventory = async (req, res) => {
   try {
     const { milks, username, password } = req.body;
-    await scraper(milks, username, password);
-    res
-      .status(201)
-      .json({ msg: "Inventory posted successfully", data: "/img.png" });
+    const image = await scraper(milks, username, password);
+
+    res.status(201).json({
+      msg: "Inventory posted successfully",
+      data: image,
+    });
   } catch (error) {
     console.log(error);
   }
