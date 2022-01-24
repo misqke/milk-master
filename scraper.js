@@ -39,7 +39,7 @@ const scraper = async (milkList, login, password) => {
     await page.click("button[type='submit'");
 
     // fill out inventory form from milk list, submit for review
-    await page.waitForSelector("tbody", { visible: true });
+    await page.waitForSelector("tbody > tr > td > input", { visible: true });
     for (let i = 0; i < milkList.length; i++) {
       await page.type(
         `tr:nth-child(${i + 1}) > td:nth-child(1) > input`,
