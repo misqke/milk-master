@@ -8,7 +8,7 @@ const scraper = async (milkList, login, password) => {
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "-disable-setuid-sandbox"],
     defaultViewport: {
-      width: 500,
+      width: 325,
       height: 500,
     },
   });
@@ -54,9 +54,10 @@ const scraper = async (milkList, login, password) => {
 
     // SUBMIT INVENTORY - PRODUCTION ONLY
 
-    await page.hover("div.col-5.align-right > a");
+    await page.click("div.col-5.align-right > a");
 
     // screenshot confirmation and encode in base64
+    await page.waitForTimeout(2000);
     const image = await page.screenshot({ type: "png" });
     const imageString = await image.toString("base64");
 
