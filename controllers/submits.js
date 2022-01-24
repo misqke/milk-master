@@ -2,6 +2,10 @@ const scraper = require("../scraper");
 
 let image = "";
 
+const clearImage = () => {
+  image = "";
+};
+
 const submitInventory = async (req, res) => {
   try {
     const { milks, username, password } = req.body;
@@ -17,6 +21,7 @@ const submitInventory = async (req, res) => {
 const getConfirmation = async (req, res) => {
   try {
     if (image) {
+      setTimeout(() => clearImage(), 20000);
       return res
         .status(200)
         .json({ msg: "inventory posted successfully", data: image });
