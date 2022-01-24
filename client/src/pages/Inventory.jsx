@@ -46,7 +46,7 @@ const Inventory = () => {
         } else {
           setMessage(data.msg);
         }
-      }, 16000);
+      }, 12000);
     }
   };
 
