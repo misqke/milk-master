@@ -11,8 +11,8 @@ const submitInventory = async (req, res) => {
   try {
     const { milks, username, password } = req.body;
     if (
-      username !== process.env.DEANS_LOGIN ||
-      password !== process.env.DEANS_PASSWORD
+      username !== `${process.env.DEANS_LOGIN}` ||
+      password !== `${process.env.DEANS_PASSWORD}`
     ) {
       return res.status(401).json({ error: "incorrect login or password" });
     }
@@ -29,8 +29,8 @@ const submitOrder = async (req, res) => {
   try {
     const { milks, username, password } = req.body;
     if (
-      username !== process.env.DEANS_LOGIN ||
-      password !== process.env.DEANS_PASSWORD
+      username !== `${process.env.DEANS_LOGIN}` ||
+      password !== `${process.env.DEANS_PASSWORD}`
     ) {
       return res.status(401).json({ error: "incorrect login or password" });
     }
@@ -51,12 +51,10 @@ const getConfirmation = async (req, res) => {
       if (image === "error") {
         return res.status(500).json({ error: "Submission failed." });
       } else {
-        return res
-          .status(200)
-          .json({
-            msg: `${num === 1 ? "Inventory" : "Order"} Posted Successfully`,
-            data: image,
-          });
+        return res.status(200).json({
+          msg: `${num === 1 ? "Inventory" : "Order"} Posted Successfully`,
+          data: image,
+        });
       }
     } else {
       return res.status(200).json({
