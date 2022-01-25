@@ -1,8 +1,8 @@
 const express = require("express");
-const { getAllMilks, updateMilks, addMilk } = require("../controllers/milks");
+const { getAllMilks, updateMilk } = require("../controllers/milks");
 
 const router = express.Router();
 
-router.route("/").get(getAllMilks).patch(updateMilks).post(addMilk);
+router.route("/").get(getAllMilks).patch(updateMilk);
 
 module.exports = router;

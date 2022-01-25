@@ -11,10 +11,7 @@ function App() {
     <div>
       <HashRouter>
         <Header />
-        <div
-          className="bg-dark"
-          style={{ width: "100vw", minHeight: "calc(100vh - 100px)" }}
-        >
+        <div className="bg-dark" style={{ width: "100vw", minHeight: "100vh" }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

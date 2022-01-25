@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { isAuth } from "../actions/auth";
 import { submitInventory, getConfirmation } from "../actions/submits";
 import { useNavigate } from "react-router-dom";
-import MilkRow from "../components/MilkRow";
+import InventoryRow from "../components/InventoryRow";
 import { getAllMilks } from "../actions/milks";
 
 const Inventory = () => {
@@ -15,6 +15,7 @@ const Inventory = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
+  const [error, setError] = useState("");
 
   // functions
   const handleSubmit = async (e) => {
@@ -35,13 +36,18 @@ const Inventory = () => {
     if (data.error) {
       console.log(data.error);
       setMessage("");
+      setError(data.error);
     } else {
       setMessage(data.msg);
       const getImage = setInterval(async () => {
-        const data = await getConfirmation();
+        const data = await getConfirmation(1);
         if (data.data) {
           setUrl(data.data);
           setMessage(data.msg);
+          clearInterval(getImage);
+        } else if (data.error) {
+          setMessage("");
+          setError(data.error);
           clearInterval(getImage);
         } else {
           setMessage(data.msg);
@@ -77,9 +83,13 @@ const Inventory = () => {
   if (!message) {
     return (
       <div className="container py-2 px-3 bg-dark">
+        {error && <h3 className="alert alert-danger">{error}</h3>}
+        <div className="d-flex justify-content-between my-2">
+          <h2 className="text-white my-auto">Inventory</h2>
+        </div>
         {milks &&
           milks.map((milk) => {
-            return <MilkRow milk={milk} key={milk._id} />;
+            return <InventoryRow milk={milk} key={milk._id} />;
           })}
         <form className="container my-5" onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -87,7 +97,7 @@ const Inventory = () => {
               Deans Login
             </label>
             <input
-              className="form-control"
+              className="form-control bg-dark text-white"
               type="text"
               id="username"
               value={username}
@@ -99,7 +109,7 @@ const Inventory = () => {
               Deans Password
             </label>
             <input
-              className="form-control"
+              className="form-control bg-dark text-white"
               type="password"
               id="password"
               value={password}

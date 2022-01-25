@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { getColor } from "../utils/colors";
+import { useSelector, useDispatch } from "react-redux";
+import { updateStacks, updateCrates } from "../redux/orderSlice";
 
-const MilkRow = ({ milk }) => {
-  const [shelf, setShelf] = useState("");
-  const [crates, setCrates] = useState("");
+const OrderRow = ({ milk, cratesPerStack }) => {
+  const dispatch = useDispatch();
+  const stacks = useSelector((state) => state.order.milks[milk._id - 1].stacks);
+  const crates = useSelector((state) => state.order.milks[milk._id - 1].crates);
   const [total, setTotal] = useState("");
   const [color, setColor] = useState("");
 
   useEffect(() => {
     const updateTotal = () => {
-      const shelfVal = Number(shelf);
+      const stacksVal = Math.floor(
+        Number(stacks) * milk.multiplier * Number(cratesPerStack)
+      );
       const cratesVal = Math.floor(Number(crates) * milk.multiplier);
-      setTotal((shelfVal + cratesVal).toString());
+      setTotal((stacksVal + cratesVal).toString());
     };
     updateTotal();
-  }, [shelf, crates, milk.multiplier]);
+  }, [stacks, crates, milk.multiplier, cratesPerStack]);
 
   useEffect(() => {
     setColor(getColor(milk.color));
@@ -28,36 +33,40 @@ const MilkRow = ({ milk }) => {
       }}
     >
       <div className="col-12">
-        <h2
+        <h4
           className="my-auto pb-2"
           style={{ color: "#ddd", textShadow: "2px 2px 2px #000" }}
         >
           {milk.name}
-        </h2>
+        </h4>
       </div>
       <hr className="mb-2" />
       <div className="col-4 d-flex flex-column justify-content-center align-items-center">
-        <div className="col-10 text-center text-white">Shelf</div>
+        <div className="col-10 text-center text-white">Stacks</div>
         <input
-          className="col-10 text-center fs-3 rounded text-white"
+          className="col-10 text-center fs-5 rounded text-white bg-dark"
           type="text"
           min="0"
           inputMode="decimal"
-          value={shelf}
-          onChange={(e) => setShelf(e.target.value)}
-          style={{ height: "50px", backgroundColor: "#444" }}
+          value={stacks}
+          onChange={(e) =>
+            dispatch(updateStacks({ id: milk._id, value: e.target.value }))
+          }
+          style={{ height: "35px" }}
         />
       </div>
       <div className="col-4 d-flex flex-column justify-content-center align-items-center">
         <div className="col-10 text-center text-white">Crates</div>
         <input
-          className="col-10 text-center fs-3 rounded text-white"
+          className="col-10 text-center fs-5 rounded text-white bg-dark"
           type="text"
           min="0"
           inputMode="decimal"
           value={crates}
-          onChange={(e) => setCrates(e.target.value)}
-          style={{ height: "50px", backgroundColor: "#444" }}
+          onChange={(e) =>
+            dispatch(updateCrates({ id: milk._id, value: e.target.value }))
+          }
+          style={{ height: "35px" }}
         />
       </div>
       <div className="col-2 d-flex flex-column justify-content-center align-items-center">
@@ -73,4 +82,4 @@ const MilkRow = ({ milk }) => {
   );
 };
 
-export default MilkRow;
+export default OrderRow;

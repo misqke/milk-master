@@ -32,7 +32,7 @@ const Login = () => {
             enter password to continue
           </label>
           <input
-            className="form-control mb-3"
+            className="form-control mb-3 bg-dark text-white"
             type="password"
             id="password"
             placeholder="password"

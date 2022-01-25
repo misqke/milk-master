@@ -3,7 +3,7 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 const url = "https://orders.deanfoods.com/";
 
-const scraper = async (milkList, login, password) => {
+const scraper2 = async (milkList, login, password) => {
   // start browser and open page
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "-disable-setuid-sandbox"],
@@ -18,43 +18,47 @@ const scraper = async (milkList, login, password) => {
     // send page to log in page
     await page.goto(url);
 
-    // log in, click inventory, click new
+    // log in
     await page.type("#ProfileID", login);
     await page.type("#AppPwd", password);
     await page.keyboard.press("Enter");
 
+    // click order
+    await page.waitForNavigation();
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Enter");
+
+    // click date of next available delivery
+    await page.waitForSelector(".delivery");
+    await page.click(".delivery");
+
+    // fill out inputs
     await page.waitForSelector(
-      "#listView div div.col-3.col-md-2.col-lg-1 span a",
+      `tbody > tr:nth-child(1) > td:nth-child(3) > input`,
       { visible: true }
     );
-    await page.click("#listView div div.col-3.col-md-2.col-lg-1 span a");
 
-    await page.waitForSelector("#addNew", { visible: true });
-    await page.click("#addNew");
-
-    await page.waitForSelector(".k-widget.k-dropdown", { visible: true });
-    await page.click(".k-widget.k-dropdown");
-    await page.keyboard.press("ArrowUp");
-    await page.keyboard.press("Enter");
-    await page.click("button[type='submit'");
-
-    // fill out inventory form from milk list, submit for review
-    await page.waitForSelector("tbody > tr > td > input", { visible: true });
     for (let i = 0; i < milkList.length; i++) {
       await page.type(
-        `tr:nth-child(${i + 1}) > td:nth-child(1) > input`,
+        `tbody > tr:nth-child(${i + 1}) > td:nth-child(3) > input`,
         `${milkList[i]}`
       );
-      await page.click(` tr:nth-child(${i + 1}) > td:nth-child(2) > a > svg`);
+      await page.keyboard.press("Tab");
     }
+
+    // lock all and submit for review
     await page.click("#action-review");
 
     // await review page
-    await page.waitForSelector("div.col-5.align-right > a", { visible: true });
+    await page.waitForSelector("#btn-submit-order-details", { visible: true });
 
-    // SUBMIT INVENTORY - PRODUCTION ONLY
+    // SUBMIT ORDER - PRODUCTION ONLY
 
-    await page.hover("div.col-5.align-right > a");
+    await page.hover("#btn-submit-order-details");
 
     // screenshot confirmation and encode in base64
     await page.waitForTimeout(2000);
@@ -66,7 +70,6 @@ const scraper = async (milkList, login, password) => {
 
     // return base64 image
     return imageString;
-
     // catch
   } catch (error) {
     console.log(error);
@@ -78,4 +81,4 @@ const scraper = async (milkList, login, password) => {
   }
 };
 
-module.exports = scraper;
+module.exports = scraper2;

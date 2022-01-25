@@ -9,19 +9,13 @@ const getAllMilks = async (req, res) => {
   }
 };
 
-const addMilk = async (req, res) => {
+const updateMilk = async (req, res) => {
   try {
     const milk = req.body;
-    const newMilk = await Milks.create(milk);
+    const newMilk = await Milks.findByIdAndUpdate(milk._id, milk, {
+      new: true,
+    });
     res.status(201).json({ msg: "success", data: newMilk });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const updateMilks = (req, res) => {
-  try {
-    const newMilks = req.body;
   } catch (error) {
     console.log(error);
   }
@@ -29,6 +23,5 @@ const updateMilks = (req, res) => {
 
 module.exports = {
   getAllMilks,
-  updateMilks,
-  addMilk,
+  updateMilk,
 };
