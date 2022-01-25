@@ -11,7 +11,7 @@ const submitInventory = async (req, res) => {
   try {
     const { milks, username, password } = req.body;
     if (
-      username !== `${process.env.DEANS_LOGIN}` ||
+      username.toLowerCase() !== `${process.env.DEANS_LOGIN}` ||
       password !== `${process.env.DEANS_PASSWORD}`
     ) {
       return res.status(401).json({ error: "incorrect login or password" });
@@ -29,7 +29,7 @@ const submitOrder = async (req, res) => {
   try {
     const { milks, username, password } = req.body;
     if (
-      username.toLowerCase !== `${process.env.DEANS_LOGIN}` ||
+      username.toLowerCase() !== `${process.env.DEANS_LOGIN}` ||
       password !== `${process.env.DEANS_PASSWORD}`
     ) {
       return res.status(401).json({ error: "incorrect login or password" });
