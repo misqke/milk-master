@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getColor } from "../utils/colors";
 import { updateMilk } from "../actions/milks";
 
 const EditRow = ({ milk }) => {
-  const [color, setColor] = useState(getColor(milk.color));
+  const [initialColor, setInitialcolor] = useState(milk.color);
+  const [initialMultiplier, setInitialMultiplier] = useState(milk.multiplier);
+  const [multiplier, setMultiplier] = useState(milk.multiplier);
+  const [color, setColor] = useState(milk.color);
+  const [colorCode, setColorCode] = useState(getColor(milk.color));
   const colorList = [
     "blue",
     "lt blue",
@@ -16,31 +20,27 @@ const EditRow = ({ milk }) => {
     "orange",
     "purple",
   ];
-  const [multiplier, setMultiplier] = useState(milk.multiplier);
 
-  const handleMultiplierChange = async (e) => {
-    setMultiplier(e.target.value);
+  const handleUpdate = async () => {
     const newMilk = {
       _id: milk._id,
-      multiplier: multiplier,
+      color,
+      multiplier,
     };
-    await updateMilk(newMilk);
+    const data = await updateMilk(newMilk);
+    setInitialMultiplier(data.data.multiplier);
+    setInitialcolor(data.data.color);
   };
 
-  const handleColorChange = async (e) => {
-    setColor(e.target.value);
-    const newMilk = {
-      _id: milk._id,
-      color: e.target.value,
-    };
-    await updateMilk(newMilk);
-  };
+  useEffect(() => {
+    setColorCode(getColor(color));
+  }, [color]);
 
   return (
     <div
       className="row mb-2 pt-2 pb-3 justify-content-evenly"
       style={{
-        background: `linear-gradient(${color}, ${color} 18%, #333 35%, #222)`,
+        background: `linear-gradient(${colorCode}, ${colorCode} 18%, #333 35%, #222)`,
       }}
     >
       <div className="col-12">
@@ -52,7 +52,7 @@ const EditRow = ({ milk }) => {
         </h4>
       </div>
       <hr />
-      <div className="col-5 d-flex flex-column justify-content-center align-items-center">
+      <div className="col-4 d-flex flex-column justify-content-center align-items-center">
         <div className="col-10 text-center text-white">per crate</div>
         <input
           className="col-10 text-center fs-5 rounded text-white bg-dark"
@@ -60,29 +60,45 @@ const EditRow = ({ milk }) => {
           min="0"
           inputMode="decimal"
           value={multiplier}
-          onChange={handleMultiplierChange}
+          onChange={(e) => setMultiplier(e.target.value)}
           style={{ height: "35px" }}
         />
       </div>
-      <div className="col-5 d-flex flex-column justify-content-center align-items-center">
+      <div className="col-4 d-flex flex-column justify-content-center align-items-center">
         <div className="col-10 text-center text-white">Color</div>
         <select
-          class="form-select text-center col-10 bg-dark"
-          onChange={handleColorChange}
-          style={{ height: "35px", color: `${color}` }}
+          className="form-select text-center col-10 bg-dark"
+          onChange={(e) => setColor(e.target.value)}
+          style={{ height: "35px", color: `${colorCode}` }}
+          value={color}
         >
-          {colorList.map((colora) => (
+          {colorList.map((singleColor) => (
             <option
-              selected={getColor(colora) === color ? true : false}
-              key={colora}
-              value={colora}
-              style={{ color: `${getColor(colora)}` }}
+              key={singleColor}
+              value={singleColor}
+              style={{ color: `${getColor(singleColor)}` }}
             >
-              {colora}
+              {singleColor}
             </option>
           ))}
         </select>
       </div>
+      {multiplier !== initialMultiplier || color !== initialColor ? (
+        <div className="col-2 d-flex align-items-end justify-content-center">
+          <button
+            className="btn rounded-circle"
+            style={{ borderColor: `${colorCode}` }}
+            onClick={handleUpdate}
+          >
+            <i
+              className="bi bi-cloud-arrow-up-fill"
+              style={{ color: `${colorCode}` }}
+            />
+          </button>
+        </div>
+      ) : (
+        <div className="col-2"></div>
+      )}
     </div>
   );
 };
