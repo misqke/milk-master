@@ -15,7 +15,7 @@ function App() {
           className="bg-dark"
           style={{
             width: "100vw",
-            minHeight: "100vh",
+            minHeight: "80vh",
             scrollBehavior: "smooth",
           }}
         >

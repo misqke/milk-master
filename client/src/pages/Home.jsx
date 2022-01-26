@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { isAuth } from "../actions/auth";
 import { useNavigate, Link } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Home = () => {
       <Link to="/milks" className="btn btn-primary py-2 w-100">
         Milk List
       </Link>
+      <Footer />
     </div>
   );
 };
