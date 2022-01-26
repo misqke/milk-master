@@ -52,14 +52,14 @@ const getConfirmation = async (req, res) => {
         return res.status(500).json({ error: "Submission failed." });
       } else {
         return res.status(200).json({
-          msg: `${num === 1 ? "Inventory" : "Order"} Posted Successfully`,
+          msg: `${num === "1" ? "Inventory" : "Order"} Posted Successfully`,
           data: image,
         });
       }
     } else {
       return res.status(200).json({
         msg: `Submitting ${
-          num === 1 ? "inventory" : "order"
+          num === "1" ? "inventory" : "order"
         }... This may take a few minutes... Do not close or refresh browser... `,
       });
     }

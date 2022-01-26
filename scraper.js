@@ -8,8 +8,8 @@ const scraper = async (milkList, login, password) => {
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "-disable-setuid-sandbox"],
     defaultViewport: {
-      width: 340,
-      height: 500,
+      width: 360,
+      height: 600,
     },
   });
   const page = await browser.newPage();
