@@ -128,11 +128,12 @@ const Order = () => {
       <div className="container d-flex justify-content-center flex-column py-3 align-items-center">
         <h3 className="text-primary text-center py-3">{message}</h3>
         {checks.length &&
-          checks.map((milk) => (
+          checks.map((milk, i) => (
             <OrderRow
               milk={milk}
               key={milk._id}
               cratesPerStack={cratesPerStack}
+              index={i}
             />
           ))}
         {checks.length && (
@@ -191,12 +192,13 @@ const Order = () => {
         </div>
 
         {milks &&
-          milks.map((milk) => {
+          milks.map((milk, i) => {
             return view === "all" ? (
               <OrderRow
                 milk={milk}
                 key={milk._id}
                 cratesPerStack={cratesPerStack}
+                index={i}
               />
             ) : (
               milk.color === view && (
@@ -204,6 +206,7 @@ const Order = () => {
                   milk={milk}
                   key={milk._id}
                   cratesPerStack={cratesPerStack}
+                  index={i}
                 />
               )
             );
