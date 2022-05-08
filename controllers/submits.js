@@ -14,7 +14,7 @@ const submitInventory = async (req, res) => {
       login.toLowerCase() !== `${process.env.DEANS_LOGIN}` ||
       password !== `${process.env.DEANS_PASSWORD}`
     ) {
-      return res.status(401).json({ error: "incorrect login or password" });
+      return res.json({ error: "incorrect login or password" });
     }
     runScraper(milks, 1);
     res.status(201).json({
@@ -33,7 +33,7 @@ const submitOrder = async (req, res) => {
       login.toLowerCase() !== `${process.env.DEANS_LOGIN}` ||
       password !== `${process.env.DEANS_PASSWORD}`
     ) {
-      return res.status(401).json({ error: "incorrect login or password" });
+      return res.json({ error: "incorrect login or password" });
     }
     runScraper(milks, 2);
     res.status(201).json({

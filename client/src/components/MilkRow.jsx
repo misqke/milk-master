@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import { Row, RowTitle, Input, Total } from "../styles/components";
 import getTotal from "../util/getTotal";
 
 const MilkRow = ({ milk, index, updateMilk }) => {
@@ -12,7 +12,7 @@ const MilkRow = ({ milk, index, updateMilk }) => {
 
   return (
     <Row style={{ color: `${milk.color}` }}>
-      <Title>{milk.name}</Title>
+      <RowTitle>{milk.name}</RowTitle>
       <Input
         type="text"
         min="0"
@@ -64,30 +64,3 @@ const MilkRow = ({ milk, index, updateMilk }) => {
 };
 
 export default MilkRow;
-
-const Row = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  text-shadow: 0 0 2px #222;
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  width: 30%;
-`;
-
-const Input = styled.input`
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  background: #1113;
-  color: inherit;
-`;
-
-const Total = styled.p`
-  text-align: center;
-  width: 50px;
-`;

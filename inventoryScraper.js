@@ -54,7 +54,7 @@ const inventoryScraper = async (milkList) => {
 
     // SUBMIT INVENTORY - PRODUCTION ONLY
 
-    await page.hover("div.col-5.align-right > a");
+    await page.click("div.col-5.align-right > a");
 
     // screenshot confirmation and encode in base64
     await page.waitForTimeout(2000);
