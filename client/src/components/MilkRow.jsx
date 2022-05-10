@@ -5,6 +5,15 @@ import getTotal from "../util/getTotal";
 const MilkRow = ({ milk, index, updateMilk }) => {
   const [total, setTotal] = useState(0);
 
+  const handleChange = (e, what) => {
+    const value =
+      what === "singles"
+        ? Math.floor(Number(e.target.value))
+        : Number(e.target.value);
+    const updatedMilk = { ...milk, [what]: value };
+    updateMilk(index, updatedMilk);
+  };
+
   useEffect(() => {
     const newTotal = getTotal(milk);
     setTotal(newTotal);
@@ -14,49 +23,25 @@ const MilkRow = ({ milk, index, updateMilk }) => {
     <Row style={{ color: `${milk.color}` }}>
       <RowTitle>{milk.name}</RowTitle>
       <Input
-        type="text"
+        type="number"
         min="0"
         inputMode="decimal"
         value={milk.stacks}
-        onChange={(e) =>
-          updateMilk(index, {
-            name: milk.name,
-            crateMultiplier: milk.crateMultiplier,
-            stacks: Number(e.target.value),
-            crates: milk.crates,
-            singles: milk.singles,
-          })
-        }
+        onChange={(e) => handleChange(e, "stacks")}
       />
       <Input
-        type="text"
+        type="number"
         min="0"
         inputMode="decimal"
         value={milk.crates}
-        onChange={(e) =>
-          updateMilk(index, {
-            name: milk.name,
-            crateMultiplier: milk.crateMultiplier,
-            stacks: milk.stacks,
-            crates: Number(e.target.value),
-            singles: milk.singles,
-          })
-        }
+        onChange={(e) => handleChange(e, "crates")}
       />
       <Input
         type="text"
         min="0"
         inputMode="decimal"
         value={milk.singles}
-        onChange={(e) =>
-          updateMilk(index, {
-            name: milk.name,
-            crateMultiplier: milk.crateMultiplier,
-            stacks: milk.stacks,
-            crates: milk.crates,
-            singles: Number(e.target.value),
-          })
-        }
+        onChange={(e) => handleChange(e, "singles")}
       />
       <Total>{total}</Total>
     </Row>

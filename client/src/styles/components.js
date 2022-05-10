@@ -99,7 +99,8 @@ export const Selector = styled.div`
 
 export const ErrorMsg = styled.div`
   width: 100%;
-  /* height: 1rem; */
+  position: sticky;
+  top: 2rem;
   padding: 0.25rem;
   background-color: #f003;
   color: #fff;
