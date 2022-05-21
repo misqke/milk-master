@@ -3,7 +3,7 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 const url = "https://orders.deanfoods.com/";
 
-const orderScraper = async (milkList) => {
+const orderScraper = async (milkList, login, password) => {
   // start browser and open page
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "-disable-setuid-sandbox"],
@@ -19,12 +19,22 @@ const orderScraper = async (milkList) => {
     await page.goto(url);
 
     // log in
-    await page.type("#ProfileID", process.env.DEANS_LOGIN);
-    await page.type("#AppPwd", process.env.DEANS_PASSWORD);
+    await page.type("#ProfileID", login);
+    await page.type("#AppPwd", password);
     await page.keyboard.press("Enter");
 
+    try {
+      await page.waitForSelector(
+        "#listView div div.col-3.col-md-2.col-lg-1 span a",
+        { timeout: 3000 }
+      );
+    } catch (error) {
+      await browser.close();
+      return "error: invalid login or password";
+    }
+
     // click order
-    await page.waitForNavigation();
+    // await page.waitForNavigation();
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
@@ -77,7 +87,7 @@ const orderScraper = async (milkList) => {
     // close browser
     await browser.close();
 
-    return "error";
+    return "error: Submission failed";
   }
 };
 

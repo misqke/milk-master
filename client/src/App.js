@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Page,
   Title,
@@ -21,6 +21,7 @@ import "./styles/app.css";
 axios.defaults.baseURL = "https://milk-master.herokuapp.com";
 
 export default function App() {
+  const [validated, setValidated] = useState(false);
   const [milks, setMilks] = useState([]);
   const [loading, setLoading] = useState(
     milks.length ? "" : "Loading milk data..."
@@ -69,6 +70,20 @@ export default function App() {
     const submission = milks.map((milk) => {
       return getTotal(milk);
     });
+
+    let isEmpty = true;
+    for (let i = 0; i < submission.length; i++) {
+      if (submission[i] !== 0) {
+        isEmpty = false;
+        break;
+      }
+    }
+    if (isEmpty === true) {
+      setError("Please include at least one value");
+      setLoading(false);
+      return;
+    }
+
     const { data } = await axios.post(
       `/api/submits/${inventory ? "inventory" : "order"}`,
       {
@@ -86,37 +101,58 @@ export default function App() {
     }
   };
 
-  // gather milk data at load
-  useEffect(() => {
-    const getMilkList = async () => {
-      const { data } = await axios.get("/api/milks");
-
-      const milkList = [];
-      data.forEach((milk) => {
-        const color = getColor(milk.name);
-        const newMilk = {
-          name: milk.name,
-          crateMultiplier: Number(milk.crateMultiplier),
-          singles: "",
-          crates: "",
-          stacks: "",
-          color,
-        };
-        milkList.push(newMilk);
-      });
-      setMilks(milkList);
-      setLoading("");
-    };
-
-    if (!milks.length) {
-      getMilkList();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setValidated(true);
+    const { data } = await axios.post("/api/milks", { login, password });
+    if (data.error) {
+      setValidated(false);
+      setError(data.error);
     }
-  }, [milks.length]);
+
+    const milkList = [];
+    data.forEach((milk) => {
+      const color = getColor(milk.name);
+      const newMilk = {
+        name: milk.name,
+        crateMultiplier: Number(milk.crateMultiplier),
+        singles: "",
+        crates: "",
+        stacks: "",
+        color,
+      };
+      milkList.push(newMilk);
+    });
+    setMilks(milkList);
+    setLoading("");
+  };
 
   return (
     <Page>
       <Title>Milk Master v2.0</Title>
-      {loading.length > 0 ? (
+      {!validated ? (
+        <Form onSubmit={handleLogin}>
+          {error.length > 0 && <ErrorMsg>{error}</ErrorMsg>}
+          <label htmlFor="login">Dean&apos;s Login</label>
+          <input
+            type="text"
+            id="login"
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
+            placeholder="Deans Login"
+          />
+          <label htmlFor="password">Dean&apos;s Password</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Deans Password"
+          />
+          <SubmitBtn type="submit">Submit</SubmitBtn>
+        </Form>
+      ) : loading.length > 0 ? (
         <LoadingMessage>{loading}</LoadingMessage>
       ) : confirmation.length > 0 ? (
         <Image src={`data:image/gif;base64, ${confirmation}`} alt="" />
@@ -155,22 +191,7 @@ export default function App() {
                 Order
               </button>
             </Selector>
-            <label htmlFor="login">Dean&apos;s Login</label>
-            <input
-              type="text"
-              id="login"
-              value={login}
-              onChange={(e) => setLogin(e.target.value)}
-              placeholder="Deans Login"
-            />
-            <label htmlFor="password">Dean&apos;s Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Deans Password"
-            />
+
             <SubmitBtn type="submit">submit</SubmitBtn>
           </Form>
         </Box>

@@ -2,26 +2,33 @@ require("dotenv").config();
 const puppeteer = require("puppeteer");
 const url = "https://orders.deanfoods.com/";
 
-const getMilks = async () => {
+const getMilks = async (login, password) => {
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "-disable-setuid-sandbox"],
     defaultViewport: {
       width: 360,
       height: 600,
     },
+    // headless: false,
+    // slowMo: 10,
   });
   const page = await browser.newPage();
   try {
     await page.goto(url);
-
-    await page.type("#ProfileID", process.env.DEANS_LOGIN);
-    await page.type("#AppPwd", process.env.DEANS_PASSWORD);
+    await page.type("#ProfileID", login);
+    await page.type("#AppPwd", password);
     await page.keyboard.press("Enter");
 
-    await page.waitForSelector(
-      "#listView div div.col-3.col-md-2.col-lg-1 span a",
-      { visible: true }
-    );
+    try {
+      await page.waitForSelector(
+        "#listView div div.col-3.col-md-2.col-lg-1 span a",
+        { timeout: 3000 }
+      );
+    } catch (error) {
+      await browser.close();
+      return "error: invalid login or password";
+    }
+
     await page.click("#listView div div.col-3.col-md-2.col-lg-1 span a");
 
     await page.waitForSelector("#addNew", { visible: true });

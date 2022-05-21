@@ -10,13 +10,8 @@ const clearImage = () => {
 const submitInventory = async (req, res) => {
   try {
     const { milks, login, password } = req.body;
-    if (
-      login.toLowerCase() !== `${process.env.DEANS_LOGIN}` ||
-      password !== `${process.env.DEANS_PASSWORD}`
-    ) {
-      return res.json({ error: "incorrect login or password" });
-    }
-    runScraper(milks, 1);
+
+    runScraper(milks, login, password, 1);
     res.status(201).json({
       message: "Submitting inventory... ",
     });
@@ -29,13 +24,8 @@ const submitInventory = async (req, res) => {
 const submitOrder = async (req, res) => {
   try {
     const { milks, login, password } = req.body;
-    if (
-      login.toLowerCase() !== `${process.env.DEANS_LOGIN}` ||
-      password !== `${process.env.DEANS_PASSWORD}`
-    ) {
-      return res.json({ error: "incorrect login or password" });
-    }
-    runScraper(milks, 2);
+
+    runScraper(milks, login, password, 2);
     res.status(201).json({
       message: "Submitting order... ",
     });
@@ -50,8 +40,8 @@ const getConfirmation = async (req, res) => {
     const { num } = req.query;
     if (image) {
       setTimeout(() => clearImage(), 22000);
-      if (image === "error") {
-        return res.status(500).json({ error: "Submission failed." });
+      if (image.slice(0, 5) === "error") {
+        return res.status(500).json({ error: image.slice(7) });
       } else {
         return res.status(200).json({
           message: `${num === "1" ? "Inventory" : "Order"} Posted Successfully`,
@@ -69,11 +59,11 @@ const getConfirmation = async (req, res) => {
   }
 };
 
-const runScraper = async (milks, num) => {
+const runScraper = async (milks, login, password, num) => {
   if (num === 1) {
-    image = await inventoryScraper(milks);
+    image = await inventoryScraper(milks, login, password);
   } else {
-    image = await orderScraper(milks);
+    image = await orderScraper(milks, login, password);
   }
 };
 
