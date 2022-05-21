@@ -70,7 +70,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  width: 100%;
+  width: 70%;
   max-width: 400px;
   label {
     color: #fff;
